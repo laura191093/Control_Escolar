@@ -1,0 +1,103 @@
+﻿<!DOCTYPE html-->
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="css/jquery.mobile-1.4.5.min.css" />
+<link rel="stylesheet" href="css/jquery-ui.css" />
+<script src="js/jquery.min.js"></script>
+<script src="js/jquery-ui.js"></script>
+<script src="js/jquery.mobile-1.4.5.min.js"></script>
+<title>Aplicación Móvil</title>
+<script type="text/javascript">
+$(document).ready(function inicio(){
+$('#ingresar').on('click',function(){
+    var intentos=0;
+		var usu = $('#usu').val();
+		var pass = $('#pass').val();
+		var area = $('#area').val();
+		var url = 'http://laura1910933.260mb.net/procesar_login.php';
+		var total = usu.length * pass.length * area.length;
+		if (total>0){
+			$.ajax({
+                    type: 'POST',
+                    url: url,
+                    data: 'usu='+usu+'&pass='+pass+'&area='+area,
+                    success: function(valor){
+                    intentos=intentos+1;
+                   
+                               
+                    if(valor == 'usuario'){
+                            $('#mensaje').addClass('error').html('El usuario ingresado no existe').show(300).delay(7000).hide(300);
+                            $('#usu').focus();
+                            return false;
+                    }else if(valor == 'area'){
+                            $('#mensaje').addClass('error').html('Usted no pertenece a la institucion').show(300).delay(7000).hide(300);
+                            $('#area').focus();
+                            return false;
+                    }else if(valor == 'password'){
+                            $('#mensaje').addClass('error').html('Su password es incorrecto').show(300).delay(7000).hide(300);
+                            $('#pass').focus();
+                            return false;
+                         
+                    }else if(valor == 'itsl'){
+                            document.location.href = 'menu.php';
+                }	}
+			});
+			return false;
+		}else{
+			$('#mensaje').addClass('error').html('Complete todos los campos').show(300).delay(3000).hide(300);
+		}
+	});
+        
+ 
+});
+</script>
+<style type="text/css">
+p{
+text-align:center;
+}
+
+#mensaje{
+font-size: 20px;
+font-family: cursive;
+color: red;
+background: cornsilk;
+}
+</style>
+</head>
+
+<body>
+
+    <div data-role="page" id="login">
+  <div data-role="header" >
+      <h1>Inicie sesión</h1>
+  </div>
+  <div data-role="content">
+<div class="login" align="center">
+    
+    <label for="usu">Ingrese usuario:</label>
+        <input type="text" id="usu"/>
+        
+        <label for="pass">Ingrese contraseña:</label>
+        <input type="password" id="pass"/>
+        
+        <label for="area">Instituto:</label>
+        
+        <select id="area">            
+         <option value="itsl">ITSL</option>
+        </select><br>
+        
+        <button id="ingresar">Ingresar</button>
+         <a href="Registros.html" data-role="button" data-transition="slide">Resgistrar usuario</a>
+        
+        <div id="mensaje"></div>
+        
+     </div>
+  <div data-role="footer">
+  <p>Derechos reservados</p>
+  </div>
+</div>
+   </div>        
+</body>
+</html>
+
+

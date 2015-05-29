@@ -1,0 +1,71 @@
+﻿<!DOCTYPE html-->
+<html>
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="css/jquery.mobile-1.4.5.min.css" />
+<link rel="stylesheet" href="css/jquery-ui.css" />
+<script src="js/jquery.min.js"></script>
+<script src="js/jquery-ui.js"></script>
+<script src="js/jquery.mobile-1.4.5.min.js"></script>
+<title>Aplicación Móvil</title>
+<script type="text/javascript">
+$(document).ready(function inicio(){
+
+  function dibujarTabla(respuesta, respDatos){
+  respuesta.html("");
+    respuesta.append('<table id="tab" border="1">');
+    var tabla=$("#tab");
+    tabla.html("<tr><th>Parcial</th><th>Profesor</th><th>Materia</th><th>Calificacion</th></tr>");
+    for(var i in respDatos){
+      tabla.append("<tr><td>"+respDatos[i].parcial+"</td>"
+      +"<td>"+respDatos[i].profesor+"</td>"
+      +"<td>"+respDatos[i].materia+"</td>"
+      +"<td>"+respDatos[i].calificacion+"</td></tr>");
+    }
+    tabla.append("</table>");
+  }
+  
+  var consultar2=$("#btnconsultar2");
+  consultar2.click(function cons2(){
+  var valConsulta=$("#valConsulta").val();
+    $.ajax({
+      type:"POST",
+      url:"http://laura1910933.260mb.net/buscarparciales.php",
+      data:"Id="+valConsulta,
+      success: consultaEstudiante
+    });
+    
+    function consultaEstudiante(datos){
+    var respDatos2=$.parseJSON(datos);   
+    var respuesta2=$("#resconsulta2");
+    dibujarTabla(respuesta2, respDatos2);
+    }
+  });
+  
+});
+</script>
+<style type="text/css">
+p{
+text-align:center;
+}
+</style>
+</head>
+<body>
+    
+<div data-role="page" id="consulta2">
+  <div data-role="header" >
+    <p>Calificaciones</p>
+  </div>
+  <div data-role="content">
+    <label for="valConsulta">Parcial a buscar:</label>
+    <input type="text" id="valConsulta" >
+    <input type="button" id="btnconsultar2" value="Consultar">
+    <div id="resconsulta2"></div>
+  </div>
+  <div data-role="footer">
+  <p>Derechos reservados</p>
+  </div>
+</div>
+      
+</body>
+</html>
